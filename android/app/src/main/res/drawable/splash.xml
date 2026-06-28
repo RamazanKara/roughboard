@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Branded launch screen: white pencil centered on Roughboard teal.
+     Uses a raster splash_icon (not a vector) so it is safe as a window
+     background on all supported API levels. -->
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:drawable="@color/splashScreenBackground" />
+    <item
+        android:drawable="@drawable/splash_icon"
+        android:gravity="center" />
+</layer-list>

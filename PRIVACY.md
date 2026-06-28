@@ -46,4 +46,4 @@ If this policy changes, the updated version will be posted at this URL with a ne
 
 ## Contact
 
-Questions about this policy: **<replace-with-your-contact-email>**
+Questions about this policy: **mail@r-kara.de**

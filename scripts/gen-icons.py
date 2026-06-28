@@ -1,17 +1,25 @@
-"""Generate the legacy PNG launcher icons (brand background + white pencil) for
-all mipmap densities. The adaptive icon (mipmap-anydpi-v26) is defined in XML and
-uses @color/ic_launcher_background + @drawable/ic_pencil_foreground; these PNGs
-are the fallback for pre-API-26 launchers. Run: `python scripts/gen-icons.py`
-(requires Pillow)."""
+"""Generate Roughboard's raster art from one teal-pencil design:
+- legacy launcher icons (mipmap-*/ic_launcher*.png) for pre-API-26 launchers
+- splash icons (drawable-*/splash_icon.png) for the launch screen
+- docs/playstore-icon-512.png (Play listing icon)
+- docs/feature-graphic-1024x500.png (Play feature graphic)
+
+The adaptive launcher icon (mipmap-anydpi-v26) and the splash background are
+defined in XML and reference @color/...; this script only makes the rasters.
+Run: `python scripts/gen-icons.py` (requires Pillow).
+"""
 import os
-from PIL import Image, ImageDraw
+from PIL import Image, ImageDraw, ImageFont
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 RES = os.path.normpath(os.path.join(HERE, "..", "android", "app", "src", "main", "res"))
-BRAND = (12, 166, 120, 255)   # #0CA678 — Roughboard teal (distinct from Excalidraw)
+DOCS = os.path.normpath(os.path.join(HERE, "..", "docs"))
+BRAND = (12, 166, 120, 255)   # #0CA678 — Roughboard teal
 WHITE = (255, 255, 255, 255)
 
-SIZES = {"mdpi": 48, "hdpi": 72, "xhdpi": 96, "xxhdpi": 144, "xxxhdpi": 192}
+ICON_SIZES = {"mdpi": 48, "hdpi": 72, "xhdpi": 96, "xxhdpi": 144, "xxxhdpi": 192}
+# ~144dp pencil on the splash
+SPLASH_SIZES = {"mdpi": 144, "hdpi": 216, "xhdpi": 288, "xxhdpi": 432, "xxxhdpi": 576}
 SS = 4  # supersample for crisp edges
 
 
@@ -49,23 +57,52 @@ def make_icon(size, round_shape):
     return img.resize((size, size), Image.LANCZOS)
 
 
-def make_playstore_icon():
-    """512x512 icon for the Play Store listing."""
-    return make_icon(512, False)
+def make_splash_icon(size):
+    return draw_pencil(size * SS).resize((size, size), Image.LANCZOS)
+
+
+def _font(size):
+    for path in (r"C:\Windows\Fonts\segoeuib.ttf", r"C:\Windows\Fonts\arialbd.ttf",
+                 "/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf"):
+        try:
+            return ImageFont.truetype(path, size)
+        except Exception:
+            continue
+    return ImageFont.load_default()
+
+
+def make_feature_graphic():
+    """1024x500 Play Store feature graphic: teal bg, app icon + wordmark."""
+    W, H = 1024, 500
+    img = Image.new("RGBA", (W, H), BRAND)
+    icon = make_icon(300, False)
+    img.alpha_composite(icon, (96, (H - 300) // 2))
+    d = ImageDraw.Draw(img)
+    d.text((430, 196), "Roughboard", font=_font(86), fill=WHITE)
+    d.text((434, 296), "Offline hand-drawn whiteboard",
+           font=_font(34), fill=(230, 252, 245, 255))
+    return img.convert("RGB")
 
 
 if __name__ == "__main__":
-    for density, size in SIZES.items():
+    for density, size in ICON_SIZES.items():
         folder = os.path.join(RES, f"mipmap-{density}")
         os.makedirs(folder, exist_ok=True)
         make_icon(size, False).save(os.path.join(folder, "ic_launcher.png"))
         make_icon(size, True).save(os.path.join(folder, "ic_launcher_round.png"))
         fg = Image.new("RGBA", (size, size), (0, 0, 0, 0))
-        fg = Image.alpha_composite(fg, draw_pencil(size * SS).resize((size, size), Image.LANCZOS))
+        fg.alpha_composite(make_splash_icon(size))
         fg.save(os.path.join(folder, "ic_launcher_foreground.png"))
-        print(f"  mipmap-{density}: {size}px")
-    docs = os.path.normpath(os.path.join(HERE, "..", "docs"))
-    os.makedirs(docs, exist_ok=True)
-    make_playstore_icon().save(os.path.join(docs, "playstore-icon-512.png"))
-    print("  docs/playstore-icon-512.png (Play listing)")
+        print(f"  mipmap-{density}: launcher {size}px")
+
+    for density, size in SPLASH_SIZES.items():
+        folder = os.path.join(RES, f"drawable-{density}")
+        os.makedirs(folder, exist_ok=True)
+        make_splash_icon(size).save(os.path.join(folder, "splash_icon.png"))
+        print(f"  drawable-{density}: splash_icon {size}px")
+
+    os.makedirs(DOCS, exist_ok=True)
+    make_icon(512, False).save(os.path.join(DOCS, "playstore-icon-512.png"))
+    make_feature_graphic().save(os.path.join(DOCS, "feature-graphic-1024x500.png"))
+    print("  docs/playstore-icon-512.png + docs/feature-graphic-1024x500.png")
     print("Done.")

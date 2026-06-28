@@ -19,3 +19,16 @@
 # If you keep the line number information, uncomment this to
 # hide the original source file name.
 #-renamesourcefileattribute SourceFile
+
+# --- Capacitor (plugins are loaded by class name via reflection) ---
+-keep class com.getcapacitor.** { *; }
+-keep class com.capacitorjs.** { *; }
+-keep @com.getcapacitor.annotation.CapacitorPlugin public class * { *; }
+-keepclassmembers class * {
+    @com.getcapacitor.annotation.PermissionCallback <methods>;
+    @com.getcapacitor.annotation.ActivityCallback <methods>;
+    @com.getcapacitor.PluginMethod public <methods>;
+}
+-keepclassmembers class * extends com.getcapacitor.Plugin { public <methods>; }
+# JS interface methods reached from the WebView
+-keepclassmembers class * { @android.webkit.JavascriptInterface <methods>; }
