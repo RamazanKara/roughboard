@@ -32,9 +32,9 @@ on the Play Store. Roughboard makes it a first-class, offline Android app.
 
 ## Build
 
-**Prerequisites:** Node.js 18+, JDK 17, Android SDK (platform-tools,
-`platforms;android-34`, `build-tools;34.0.0`). Point `android/local.properties`
-at your SDK (`sdk.dir=...`).
+**Prerequisites:** Node.js 20+, JDK 21, Android SDK (platform-tools,
+`platforms;android-35`, `build-tools;35.0.0`). Point `android/local.properties`
+at your SDK (`sdk.dir=...`). Built with Capacitor 7 / AGP 8.7.2 / Gradle 8.11.1.
 
 ```bash
 npm install

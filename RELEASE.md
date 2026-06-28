@@ -5,20 +5,12 @@ Google Play Store. Items marked **[REQUIRED]** will block publishing if skipped.
 
 ---
 
-## 0. One required code change before you submit
+## 0. Pre-submit code state
 
-**[REQUIRED] Bump the target SDK.** Google Play requires new apps to target a
-recent Android API level (API 35 / Android 15 as of late 2025; Play shows the
-exact current requirement when you upload). This project currently targets
-**API 34**, which Play will reject for a new app.
-
-- Edit `android/variables.gradle`: set `compileSdkVersion` and `targetSdkVersion`
-  to the required level (e.g. `35`).
-- API 35 needs **Android Gradle Plugin 8.6+**, which in practice means upgrading
-  **Capacitor 6 → 7** (`npm i @capacitor/core@7 @capacitor/cli@7 @capacitor/android@7`
-  and the plugins), and **JDK 21** instead of 17.
-- Install the platform: `sdkmanager "platforms;android-35" "build-tools;35.0.0"`.
-- Rebuild and re-test on a device after upgrading.
+**Target SDK — already done.** The app targets **API 35** (Android 15) via
+Capacitor 7, AGP 8.7.2, Gradle 8.11.1, and JDK 21 — meeting Google Play's current
+requirement for new apps. This has been built and verified running on-device
+(minSdk 23).
 
 **[REQUIRED] Versioning.** Every upload needs a higher `versionCode`. Bump
 `versionCode`/`versionName` in `android/app/build.gradle` for each release.
@@ -126,7 +118,7 @@ stay opted-in for 14 consecutive days**.
 
 ## Final pre-submit checklist
 
-- [ ] targetSdk bumped to Play's required level (and re-tested)
+- [x] targetSdk 35 (done — Capacitor 7 / AGP 8.7.2 / Gradle 8.11.1 / JDK 21)
 - [ ] versionCode incremented
 - [ ] AAB built & signed; upload key backed up
 - [ ] Privacy policy hosted; URL + contact email filled in
