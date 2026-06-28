@@ -63,9 +63,9 @@ In Play Console → **Create app**:
   - **Feature graphic** 1024×500.
   - **Screenshots**: at least 2 phone; add 7"/10" tablet screenshots (the app is
     great on tablets — this also unlocks the tablet/Chromebook audience).
-- **[REQUIRED] Privacy policy URL** — host `PRIVACY.md` somewhere public (e.g.
-  GitHub Pages or the raw GitHub URL) and paste the link. Fill in your contact
-  email in that file first.
+- **[REQUIRED] Privacy policy URL** — already hosted (GitHub Pages, served from
+  `/docs`): **https://ramazankara.github.io/roughboard/privacy.html** — paste
+  that into Play.
 
 ---
 
@@ -121,7 +121,7 @@ stay opted-in for 14 consecutive days**.
 - [x] targetSdk 35 (done — Capacitor 7 / AGP 8.7.2 / Gradle 8.11.1 / JDK 21)
 - [ ] versionCode incremented
 - [ ] AAB built & signed; upload key backed up
-- [ ] Privacy policy hosted; URL + contact email filled in
+- [x] Privacy policy hosted (ramazankara.github.io/roughboard/privacy.html) + contact email filled
 - [ ] Data safety = no collection; content rating done; ads = none
 - [ ] Icon 512, feature graphic, phone + tablet screenshots
 - [ ] Merchant account active; price set

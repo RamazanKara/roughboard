@@ -11,8 +11,8 @@ Ready-to-paste content for the Play Console listing. Character limits noted.
 | Type | App · Paid |
 | Default language | English (United States) |
 | Contact email | mail@r-kara.de |
-| Website | https://github.com/RamazanKara/roughboard |
-| Privacy policy URL | (host `PRIVACY.md` — e.g. enable GitHub Pages, then use that URL, or the raw file URL) |
+| Website | https://ramazankara.github.io/roughboard/ |
+| Privacy policy URL | https://ramazankara.github.io/roughboard/privacy.html |
 
 ## Short description (≤80 chars)
 
