@@ -1,0 +1,30 @@
+{
+  "name": "roughboard",
+  "private": true,
+  "version": "1.0.0",
+  "description": "Roughboard — a native Android build of the open-source Excalidraw hand-drawn whiteboard editor.",
+  "license": "MIT",
+  "author": "Ramazan Kara",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "copy-assets": "node scripts/copy-excalidraw-assets.mjs"
+  },
+  "dependencies": {
+    "@capacitor/android": "^6.2.1",
+    "@capacitor/core": "^6.2.1",
+    "@capacitor/filesystem": "^6.0.4",
+    "@capacitor/share": "^6.0.4",
+    "@capacitor/toast": "^6.0.4",
+    "@excalidraw/excalidraw": "^0.17.6",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1"
+  },
+  "devDependencies": {
+    "@capacitor/cli": "^6.2.1",
+    "@vitejs/plugin-react": "^4.3.4",
+    "vite": "^5.4.11"
+  }
+}

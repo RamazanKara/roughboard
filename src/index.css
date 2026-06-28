@@ -1,0 +1,114 @@
+html,
+body,
+#root {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  overscroll-behavior: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* Fill the device viewport and respect notches/safe areas. */
+.excalidraw-android-root {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+/* Excalidraw uses 100vh internally; lock it to the real viewport. */
+.excalidraw {
+  height: 100% !important;
+}
+
+/* ---- About / licenses overlay ---- */
+.rb-about-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  background: rgba(0, 0, 0, 0.55);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  box-sizing: border-box;
+}
+.rb-about {
+  position: relative;
+  background: #fff;
+  color: #1b1b1f;
+  width: min(560px, 100%);
+  max-height: 88vh;
+  overflow-y: auto;
+  border-radius: 14px;
+  padding: 24px 24px 20px;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  line-height: 1.5;
+  -webkit-overflow-scrolling: touch;
+}
+.rb-about h1 {
+  margin: 0;
+  font-size: 1.5rem;
+  color: #0ca678;
+}
+.rb-about h2 {
+  font-size: 1rem;
+  margin: 18px 0 6px;
+}
+.rb-about .rb-ver {
+  margin: 2px 0 14px;
+  color: #6b7280;
+  font-size: 0.85rem;
+}
+.rb-about p {
+  margin: 8px 0;
+  font-size: 0.92rem;
+}
+.rb-about .rb-disclaimer {
+  background: #f1f3f5;
+  border-left: 3px solid #0ca678;
+  padding: 8px 12px;
+  border-radius: 6px;
+  font-size: 0.85rem;
+}
+.rb-about ul {
+  margin: 6px 0;
+  padding-left: 18px;
+  font-size: 0.88rem;
+}
+.rb-about li {
+  margin: 3px 0;
+}
+.rb-about .rb-license {
+  background: #f8f9fa;
+  border: 1px solid #e9ecef;
+  border-radius: 6px;
+  padding: 10px;
+  font-size: 0.72rem;
+  white-space: pre-wrap;
+  word-break: break-word;
+  max-height: 200px;
+  overflow-y: auto;
+}
+.rb-about .rb-foot {
+  font-size: 0.78rem;
+  color: #6b7280;
+}
+.rb-about-close {
+  position: absolute;
+  top: 10px;
+  right: 12px;
+  border: none;
+  background: transparent;
+  font-size: 1.6rem;
+  line-height: 1;
+  color: #868e96;
+  cursor: pointer;
+  padding: 4px 8px;
+}
+.rb-about-close:hover {
+  color: #1b1b1f;
+}

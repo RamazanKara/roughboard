@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover"
+    />
+    <meta name="theme-color" content="#0CA678" />
+    <title>Roughboard</title>
+    <script>
+      // Load Excalidraw fonts/assets from the locally-bundled folder so the
+      // app works fully offline inside the Android WebView.
+      window.EXCALIDRAW_ASSET_PATH = "/";
+
+      // --- Native export bridge setup (must run before Excalidraw loads) ---
+      // Android System WebView exposes the File System Access API but blocks it
+      // at call time, so Excalidraw's file picker would throw. Remove these
+      // globals so browser-fs-access falls back to its legacy <a download> /
+      // <input type=file> path, which we bridge to native (see capacitor-bridge).
+      (function () {
+        try { delete window.showOpenFilePicker; } catch (e) {}
+        try { delete window.showSaveFilePicker; } catch (e) {}
+        try { delete window.showDirectoryPicker; } catch (e) {}
+
+        // Keep a handle on the Blob behind each object URL so the export bridge
+        // can read the bytes even after the URL is revoked.
+        try {
+          var map = new Map();
+          window.__excaliBlobs = map;
+          var create = URL.createObjectURL.bind(URL);
+          URL.createObjectURL = function (obj) {
+            var url = create(obj);
+            try {
+              if (obj instanceof Blob) map.set(url, obj);
+            } catch (e) {}
+            return url;
+          };
+        } catch (e) {}
+      })();
+    </script>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.jsx"></script>
+  </body>
+</html>
