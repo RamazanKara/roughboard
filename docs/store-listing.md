@@ -36,7 +36,7 @@ FEATURES
 • Select, move, resize and group elements
 • Infinite canvas with smooth zoom and pan
 • Light and dark mode
-• Stylus support — pressure-sensitive drawing, with optional palm rejection
+• Stylus support — pressure-sensitive drawing, palm rejection, pen-only mode &amp; eraser tip
 • Export and share as PNG, SVG, or an editable .excalidraw file via the Android share sheet
 • Open existing .excalidraw files
 

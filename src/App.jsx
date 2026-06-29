@@ -6,7 +6,13 @@ import {
   serializeAsJSON,
 } from "@excalidraw/excalidraw";
 import { AboutOverlay } from "./about.jsx";
-import { getPalmRejection, setPalmRejection } from "./stylus.js";
+import {
+  getStylusMode,
+  cycleStylusMode,
+  getEraserTip,
+  setEraserTip,
+  setStylusApi,
+} from "./stylus.js";
 // NOTE: Excalidraw 0.17.x ships its styles inside the JS bundle (auto-injected),
 // so there is no separate "index.css" to import.
 
@@ -42,12 +48,15 @@ function loadLibrary() {
 function buildInitialData() {
   const scene = loadScene() || { elements: [], appState: {}, files: {} };
   const savedTheme = localStorage.getItem(THEME_KEY) || "light";
+  // Drop persisted view state (scroll/zoom) so a stray pan/zoom can never leave
+  // the canvas scrolled into the void on next launch — scrollToContent recenters.
+  const { scrollX, scrollY, zoom, ...appState } = scene.appState || {};
   return {
     elements: scene.elements,
     files: scene.files,
     appState: {
-      ...scene.appState,
-      theme: scene.appState.theme || savedTheme,
+      ...appState,
+      theme: appState.theme || savedTheme,
       // Don't restore a stale "collaborators" map etc.; let restore() handle it.
     },
     libraryItems: loadLibrary(),
@@ -84,13 +93,17 @@ function RoughboardLogo() {
 export default function App() {
   const [, setExcalidrawAPI] = useState(null);
   const [aboutOpen, setAboutOpen] = useState(false);
-  const [palmRejection, setPalmRej] = useState(() => getPalmRejection());
+  const [stylusMode, setStylusModeState] = useState(() => getStylusMode());
+  const [eraserTip, setEraserTipState] = useState(() => getEraserTip());
   const saveTimer = useRef(null);
 
-  const togglePalmRejection = useCallback(() => {
-    setPalmRej((prev) => {
+  const cycleStylus = useCallback(() => {
+    setStylusModeState(cycleStylusMode());
+  }, []);
+  const toggleEraserTip = useCallback(() => {
+    setEraserTipState((prev) => {
       const next = !prev;
-      setPalmRejection(next);
+      setEraserTip(next);
       return next;
     });
   }, []);
@@ -134,7 +147,10 @@ export default function App() {
   return (
     <div className="excalidraw-android-root">
       <Excalidraw
-        excalidrawAPI={(api) => setExcalidrawAPI(api)}
+        excalidrawAPI={(api) => {
+          setExcalidrawAPI(api);
+          setStylusApi(api);
+        }}
         initialData={initialDataRef.current}
         onChange={onChange}
         onLibraryChange={onLibraryChange}
@@ -177,7 +193,7 @@ export default function App() {
           <MainMenu.DefaultItems.ChangeCanvasBackground />
           <MainMenu.Separator />
           <MainMenu.Item
-            onSelect={togglePalmRejection}
+            onSelect={cycleStylus}
             icon={
               <svg
                 viewBox="0 0 24 24"
@@ -194,7 +210,30 @@ export default function App() {
               </svg>
             }
           >
-            {palmRejection ? "Palm rejection: On" : "Palm rejection: Off"}
+            {"Stylus: " +
+              { off: "off", palm: "palm rejection", only: "pen only" }[
+                stylusMode
+              ]}
+          </MainMenu.Item>
+          <MainMenu.Item
+            onSelect={toggleEraserTip}
+            icon={
+              <svg
+                viewBox="0 0 24 24"
+                width="1em"
+                height="1em"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              >
+                <path d="M4 14l6-6 7 7-5 5H7z" />
+                <path d="M9 20h10" />
+              </svg>
+            }
+          >
+            {eraserTip ? "Pen eraser tip: On" : "Pen eraser tip: Off"}
           </MainMenu.Item>
           <MainMenu.Separator />
           <MainMenu.DefaultItems.Help />
