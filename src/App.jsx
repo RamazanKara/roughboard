@@ -6,6 +6,7 @@ import {
   serializeAsJSON,
 } from "@excalidraw/excalidraw";
 import { AboutOverlay } from "./about.jsx";
+import { getPalmRejection, setPalmRejection } from "./stylus.js";
 // NOTE: Excalidraw 0.17.x ships its styles inside the JS bundle (auto-injected),
 // so there is no separate "index.css" to import.
 
@@ -83,7 +84,16 @@ function RoughboardLogo() {
 export default function App() {
   const [, setExcalidrawAPI] = useState(null);
   const [aboutOpen, setAboutOpen] = useState(false);
+  const [palmRejection, setPalmRej] = useState(() => getPalmRejection());
   const saveTimer = useRef(null);
+
+  const togglePalmRejection = useCallback(() => {
+    setPalmRej((prev) => {
+      const next = !prev;
+      setPalmRejection(next);
+      return next;
+    });
+  }, []);
   const initialDataRef = useRef(null);
   if (initialDataRef.current === null) {
     initialDataRef.current = buildInitialData();
@@ -165,6 +175,27 @@ export default function App() {
           <MainMenu.Separator />
           <MainMenu.DefaultItems.ToggleTheme />
           <MainMenu.DefaultItems.ChangeCanvasBackground />
+          <MainMenu.Separator />
+          <MainMenu.Item
+            onSelect={togglePalmRejection}
+            icon={
+              <svg
+                viewBox="0 0 24 24"
+                width="1em"
+                height="1em"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              >
+                <path d="M3 21l3.5-1L19 7.5 16.5 5 4 17.5 3 21z" />
+                <path d="M14.5 7l2.5 2.5" />
+              </svg>
+            }
+          >
+            {palmRejection ? "Palm rejection: On" : "Palm rejection: Off"}
+          </MainMenu.Item>
           <MainMenu.Separator />
           <MainMenu.DefaultItems.Help />
           <MainMenu.Item

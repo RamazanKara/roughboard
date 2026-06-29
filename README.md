@@ -20,6 +20,9 @@ never leave your device.
   opacity/layers/fonts), zoom & pan.
 - **Fully offline** — editor + all fonts bundled into the APK.
 - **Touch-native** drawing, selecting and panning.
+- **Stylus-friendly** — pressure-sensitive freehand drawing, plus optional palm
+  rejection (ignores finger/palm touches on the canvas while a pen is in use).
+  Toggle it from the menu.
 - **Local persistence** — scene, library and theme auto-saved on-device.
 - **Native export/share** — "Save to disk" and "Export image" (PNG/SVG) go
   through the Android share sheet.
